@@ -19,17 +19,17 @@
 #define GLM_FORCE_DEPTH_ZERO_TO_ONE
 #include <glm/glm.hpp>
 
-#include <cstdlib>
+#include <stdexcept>
 #include <iostream>
+
+#include "Test1/Test1.h"
 /*
  * 
  */
 int main(int argc, char** argv) {
-    GLFWwindow* window;
+    
     uint32_t vkExtensionCount = 0;
-    glm::vec4 vec;
-    glm::mat4x4 mat;
-    glm::vec4 res;
+    Test1 test1;
     
     glfwInit();
     
@@ -40,21 +40,16 @@ int main(int argc, char** argv) {
     }
     glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
     
-    window = glfwCreateWindow(800, 600, "Vulkan tests", nullptr, nullptr);
-    
-    vkEnumerateInstanceExtensionProperties(nullptr, &vkExtensionCount, nullptr);
-    
-    std::cout << vkExtensionCount << " supported extensions." << std::endl;
-    
-    res = vec * mat;
-    
-    std::cout << "Resulting vector: (" << res.x << ", " << res.y << ", " << res.z << ")" << std::endl;
-    
-    while(!glfwWindowShouldClose(window)){
-        glfwPollEvents();
+    try{
+        test1.run();
+    }catch(const std::runtime_error& e){
+        std::cout << e.what() << std::endl;
+        
+        glfwTerminate();
+        return 1;
     }
-    
-    glfwDestroyWindow(window);
+    //vkEnumerateInstanceExtensionProperties(nullptr, &vkExtensionCount, nullptr);
+    //std::cout << vkExtensionCount << " supported extensions." << std::endl;
     
     glfwTerminate();
     return 0;
